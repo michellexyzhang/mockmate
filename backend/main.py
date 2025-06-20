@@ -1,9 +1,11 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi import FastAPI, File, UploadFile, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import shutil
 import os
 from pydantic import BaseModel
+import tempfile
+import subprocess
 
 from text_extractor import extract_text
 from gemini import generate_mock_questions
@@ -15,7 +17,7 @@ app = FastAPI()
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001"],
+    allow_origins=["http://localhost:3000", "http://localhost:3001", "http://localhost:3002"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -59,4 +61,29 @@ async def generate_questions_endpoint(request: QuestionRequest):
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {e}") 
+        raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {e}")
+
+@app.post("/compile-pdf")
+async def compile_pdf(request: Request):
+    data = await request.json()
+    latex = data.get("latex")
+    if not latex:
+        return Response(content="No LaTeX provided", status_code=400)
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tex_path = os.path.join(tmpdir, "doc.tex")
+        pdf_path = os.path.join(tmpdir, "doc.pdf")
+        with open(tex_path, "w") as f:
+            f.write(latex)
+        try:
+            subprocess.run(
+                ["pdflatex", "-interaction=nonstopmode", tex_path],
+                cwd=tmpdir,
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            with open(pdf_path, "rb") as f:
+                pdf_bytes = f.read()
+            return Response(content=pdf_bytes, media_type="application/pdf")
+        except subprocess.CalledProcessError:
+            return Response(content="LaTeX compilation failed", status_code=500) 
