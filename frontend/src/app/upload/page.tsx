@@ -9,7 +9,6 @@ export default function UploadPage() {
   const [pastedText, setPastedText] = useState("");
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [uploadPath, setUploadPath] = useState<string | null>(null);
   const router = useRouter();
 
   const handleDrag = (e: React.DragEvent) => {
@@ -45,32 +44,56 @@ export default function UploadPage() {
   };
 
   const handleUpload = async () => {
-    if (!file && !pastedText) return;
-
-    setIsUploading(true);
-    const formData = new FormData();
-    if (file) {
-      formData.append("file", file);
-    } else if (pastedText) {
-      formData.append("text", pastedText);
+    if (!file) {
+      alert("Please select a file to upload.");
+      return;
     }
 
+    setIsUploading(true);
+
     try {
-      const response = await fetch("/api/upload", {
+      // Step 1: Upload the file to the backend
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const uploadResponse = await fetch("http://127.0.0.1:8000/upload", {
         method: "POST",
         body: formData,
       });
 
-      const data = await response.json();
-      if (data.success) {
-        setUploadPath(data.path);
-        console.log("File uploaded successfully:", data.path);
-        router.push("/view");
-      } else {
-        console.error("Upload failed:", data.error);
+      if (!uploadResponse.ok) {
+        const errorData = await uploadResponse.json();
+        throw new Error(errorData.detail || "File upload failed.");
       }
-    } catch (error) {
-      console.error("Error uploading file:", error);
+
+      const uploadData = await uploadResponse.json();
+      const filePath = uploadData.path;
+
+      // Step 2: Generate questions from the uploaded file
+      const questionsResponse = await fetch(
+        "http://127.0.0.1:8000/generate-questions",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ file_path: filePath }),
+        }
+      );
+
+      if (!questionsResponse.ok) {
+        const errorData = await questionsResponse.json();
+        throw new Error(errorData.detail || "Failed to generate questions.");
+      }
+
+      const questionsData = await questionsResponse.json();
+
+      // Step 3: Store questions and navigate
+      localStorage.setItem("mockQuestions", questionsData.questions);
+      router.push("/view");
+    } catch (error: any) {
+      console.error("An error occurred:", error);
+      alert(`An error occurred: ${error.message}`);
     } finally {
       setIsUploading(false);
     }
@@ -97,6 +120,7 @@ export default function UploadPage() {
               id="file-upload"
               className="hidden"
               onChange={handleChange}
+              accept=".pdf,.docx,.txt"
             />
             <label htmlFor="file-upload" className="cursor-pointer">
               {file ? (
@@ -129,7 +153,7 @@ export default function UploadPage() {
           onClick={handleUpload}
           disabled={(!file && !pastedText) || isUploading}
         >
-          {isUploading ? "Uploading..." : "Next"}
+          {isUploading ? "Generating..." : "Next"}
         </button>
       </footer>
     </div>
