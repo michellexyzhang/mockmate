@@ -61,7 +61,7 @@ async def generate_questions_endpoint(request: QuestionRequest):
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {e}")
+        raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {e}") 
 
 @app.post("/compile-pdf")
 async def compile_pdf(request: Request):

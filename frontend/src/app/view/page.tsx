@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import jsPDF from "jspdf";
+import PDFPreview from "@/components/PDFPreview";
+import PDFActions from "@/components/PDFActions";
 
 export default function ViewPage() {
   const [questions, setQuestions] = useState<string | null>(null);
@@ -39,26 +41,12 @@ export default function ViewPage() {
           View & Export Mock Test
         </h1>
         <div className="mt-8 w-full max-w-4xl min-h-[400px] p-6 border-2 border-dashed rounded-lg text-left bg-white shadow-sm">
-          <pre className="whitespace-pre-wrap font-sans text-sm sm:text-base leading-relaxed">
+            <pre className="whitespace-pre-wrap font-sans text-sm sm:text-base leading-relaxed">
             {questions || "No questions found. Please go back and generate them first."}
-          </pre>
+            </pre>
         </div>
-        <div className="flex gap-4 mt-4">
-          <button onClick={generatePDF} className="px-6 py-2 text-lg font-semibold text-white bg-blue-500 rounded-full hover:bg-blue-700">
-            Generate PDF
-          </button>
-          <button onClick={downloadPDF} className="px-6 py-2 text-lg font-semibold text-white bg-green-500 rounded-full hover:bg-green-700">
-            Download PDF
-          </button>
-        </div>
-        <div className="mt-8 w-full max-w-4xl">
-          <h2 className="text-2xl font-bold mb-2">PDF Preview</h2>
-          {pdfUrl ? (
-            <iframe src={pdfUrl} width="100%" height={600} style={{ border: "1px solid #ccc" }} />
-          ) : (
-            <p className="text-neutral-500">No PDF generated yet.</p>
-          )}
-        </div>
+        <PDFActions onGenerate={generatePDF} onDownload={downloadPDF} />
+        <PDFPreview pdfUrl={pdfUrl} />
       </main>
       <footer className="flex justify-between w-full p-4 max-w-4xl mx-auto">
         <Link href="/upload">
