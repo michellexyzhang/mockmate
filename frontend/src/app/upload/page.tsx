@@ -11,6 +11,7 @@ export default function UploadPage() {
   const [pastedText, setPastedText] = useState("");
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("Next");
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,56 +27,84 @@ export default function UploadPage() {
   };
 
   const handleUpload = async () => {
-    if (!file) {
-      alert("Please select a file to upload.");
+    if (!file && !pastedText) {
+      alert("Please select a file or paste text.");
       return;
     }
 
     setIsUploading(true);
+    setStatusMessage("Uploading file...");
 
     try {
-      // Step 1: Upload the file to the backend
-      const formData = new FormData();
-      formData.append("file", file);
+      let extractedText = pastedText;
+      if (file) {
+        // Step 1: Upload the file to the backend
+        const formData = new FormData();
+        formData.append("file", file);
 
-      const uploadResponse = await fetch("http://127.0.0.1:8000/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!uploadResponse.ok) {
-        const errorData = await uploadResponse.json();
-        throw new Error(errorData.detail || "File upload failed.");
-      }
-
-      const uploadData = await uploadResponse.json();
-      const filePath = uploadData.path;
-
-      // Step 2: Generate questions from the uploaded file
-      const questionsResponse = await fetch(
-        "http://127.0.0.1:8000/generate-questions",
-        {
+        const uploadResponse = await fetch("https://mockmate-backend-2sfpzijgoa-uc.a.run.app/upload", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ file_path: filePath }),
-        }
-      );
+          body: formData,
+        });
 
-      if (!questionsResponse.ok) {
-        const errorData = await questionsResponse.json();
-        throw new Error(errorData.detail || "Failed to generate questions.");
+        if (!uploadResponse.ok) {
+          const errorData = await uploadResponse.json();
+          throw new Error(errorData.detail || "File upload failed.");
+        }
+
+        const uploadData = await uploadResponse.json();
+        const filePath = uploadData.path;
+        setStatusMessage("Extracting text...");
+
+        // Step 2: Extract text from the uploaded file using backend
+        const extractResponse = await fetch("https://mockmate-backend-2sfpzijgoa-uc.a.run.app/extract-text", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ file_path: filePath }),
+        });
+        if (!extractResponse.ok) {
+          const errorData = await extractResponse.json();
+          throw new Error(errorData.detail || "Failed to extract text.");
+        }
+        const extractData = await extractResponse.json();
+        extractedText = extractData.text;
       }
 
-      const questionsData = await questionsResponse.json();
+      // Step 3: Generate LaTeX from the extracted text
+      setStatusMessage("Generating exam with Gemini...");
+      const texResponse = await fetch("https://mockmate-backend-2sfpzijgoa-uc.a.run.app/generate-tex", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: extractedText }),
+      });
+      if (!texResponse.ok) {
+        const errorData = await texResponse.json();
+        throw new Error(errorData.detail || "Failed to generate LaTeX.");
+      }
+      const texData = await texResponse.json();
+      const tex = texData.tex;
 
-      // Step 3: Store questions and navigate
-      localStorage.setItem("mockQuestions", questionsData.questions);
+      // Step 4: Compile LaTeX to PDF
+      setStatusMessage("Compiling PDF...");
+      const pdfResponse = await fetch("https://latex-service-2sfpzijgoa-uc.a.run.app/compile-pdf", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tex }),
+      });
+      if (!pdfResponse.ok) {
+        throw new Error("Failed to compile PDF.");
+      }
+      const pdfBlob = await pdfResponse.blob();
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+
+      // Step 5: Store PDF URL and navigate
+      setStatusMessage("Done!");
+      localStorage.setItem("mockPdfUrl", pdfUrl);
       router.push("/view");
     } catch (error: any) {
       console.error("An error occurred:", error);
       alert(`An error occurred: ${error.message}`);
+      setStatusMessage("Error!");
     } finally {
       setIsUploading(false);
     }
@@ -112,7 +141,7 @@ export default function UploadPage() {
           onClick={handleUpload}
           disabled={(!file && !pastedText) || isUploading}
         >
-          {isUploading ? "Generating..." : "Next"}
+          {isUploading ? statusMessage : "Next"}
         </button>
       </footer>
     </div>
