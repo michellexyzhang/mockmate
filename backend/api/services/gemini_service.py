@@ -26,18 +26,37 @@ def generate_mock_questions(text: str) -> str:
     ---
     """
     response = model.generate_content(prompt)
+    print("\n--- Gemini generated LaTeX ---\n", response.text, "\n--- End Gemini output ---\n", flush=True)
     return response.text
 
 def generate_mock_questions_tex(text: str) -> str:
+    """
+    Generates a mock exam in LaTeX format from the given text.
+    """
+    prompt = f"""
+
+    IMPORTANT: Do NOT include any markdown code block, triple backticks, or the word 'latex' anywhere in your output. Only output raw LaTeX code, starting with \\documentclass.
+
+    Based on the following text, create a mock exam.
+
+    The output should be a single, complete LaTeX string.
+   
+    The document class should be 'article'.
+    The document must include '\\usepackage{{amsmath, amssymb, enumitem}}' in the preamble.
+    The exam should have a clear title. The title should be on a single line and not contain any markdown or special characters like '#'.
+    Use standard '\\begin{{enumerate}}' and '\\end{{enumerate}}' for lists, without any extra options like '[label=(\\alph*)]'.
+    Section titles should not be in math mode (i.e. no '$' signs around them).
+    Use latex enclosed in $ for writing mathematical expressions, chemical equations,etc
+    Include sections for multiple-choice questions and long-answer questions.
+    Provide an answer key at the end of the document.
+
+    After generating the latex, replace every single '\' with '\\'
+
+    Here is the text:
+    {text}
+    """
     configure_gemini()
     model = genai.GenerativeModel('gemini-1.5-flash')
-    prompt = f"""
-    You are a test generation assistant. Generate 5-10 mock exam questions in LaTeX format (with \\documentclass, \\begin{{document}}, etc.), nicely formatted for a PDF. Use sections, question numbers, and spacing for readability.
-
-    Here is the document text:
-    ---
-    {text}
-    ---
-    """
     response = model.generate_content(prompt)
+    print("\n--- Gemini generated LaTeX ---\n", response.text, "\n--- End Gemini output ---\n")
     return response.text 
