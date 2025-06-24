@@ -34,7 +34,7 @@ def generate_mock_questions_tex(text: str) -> str:
     Generates a mock exam in LaTeX format from the given text.
     """
     prompt = f"""
-
+    
     IMPORTANT: Do NOT include any markdown code block, triple backticks, or the word 'latex' anywhere in your output. Only output raw LaTeX code, starting with \\documentclass.
     For multiple-choice questions, use itemize for the answer choices (not enumerate). Only use enumerate for the main question list.
 
