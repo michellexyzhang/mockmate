@@ -9,11 +9,14 @@ def compile_tex_to_pdf(latex: str) -> bytes:
         with open(tex_path, "w") as f:
             f.write(latex)
         try:
-            subprocess.run(
-                ["pdflatex", "-interaction=nonstopmode", tex_path],
-                cwd=tmpdir, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-            )
+            # Run pdflatex twice for references, etc.
+            for _ in range(2):
+                subprocess.run(
+                    ["pdflatex", "-interaction=nonstopmode", "doc.tex"],
+                    cwd=tmpdir, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+                )
             with open(pdf_path, "rb") as f:
                 return f.read()
-        except subprocess.CalledProcessError:
-            raise Exception("LaTeX compilation failed") 
+        except subprocess.CalledProcessError as e:
+            # Return the error log for debugging
+            raise Exception(f"LaTeX compilation failed:\n{e.stdout.decode()}\n{e.stderr.decode()}")
