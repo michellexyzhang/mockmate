@@ -42,7 +42,7 @@ export default function UploadPage() {
         const formData = new FormData();
         formData.append("file", file);
 
-        const uploadResponse = await fetch("https://mockmate-backend-2sfpzijgoa-uc.a.run.app/upload", {
+        const uploadResponse = await fetch("https://mockmate-backend-789151597479.northamerica-northeast1.run.app/upload", {
           method: "POST",
           body: formData,
         });
@@ -57,7 +57,7 @@ export default function UploadPage() {
         setStatusMessage("Extracting text...");
 
         // Step 2: Extract text from the uploaded file using backend
-        const extractResponse = await fetch("https://mockmate-backend-2sfpzijgoa-uc.a.run.app/extract-text", {
+        const extractResponse = await fetch("https://mockmate-backend-789151597479.northamerica-northeast1.run.app/extract-text", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ file_path: filePath }),
@@ -72,7 +72,7 @@ export default function UploadPage() {
 
       // Step 3: Generate LaTeX from the extracted text
       setStatusMessage("Generating exam with Gemini...");
-      const texResponse = await fetch("https://mockmate-backend-2sfpzijgoa-uc.a.run.app/generate-tex", {
+      const texResponse = await fetch("https://mockmate-backend-789151597479.northamerica-northeast1.run.app/generate-tex", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: extractedText }),
