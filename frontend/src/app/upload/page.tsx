@@ -101,9 +101,13 @@ export default function UploadPage() {
       setStatusMessage("Done!");
       localStorage.setItem("mockPdfUrl", pdfUrl);
       router.push("/view");
-    } catch (error: any) {
+    } catch (error) {
       console.error("An error occurred:", error);
-      alert(`An error occurred: ${error.message}`);
+      if (error instanceof Error) {
+        alert(`An error occurred: ${error.message}`);
+      } else {
+        alert("An unknown error occurred.");
+      }
       setStatusMessage("Error!");
     } finally {
       setIsUploading(false);

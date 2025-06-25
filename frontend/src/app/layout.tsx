@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Rock_Salt } from "next/font/google";
 import { Caveat_Brush } from "next/font/google";
 import "./globals.css";
 
@@ -12,12 +11,6 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-});
-
-const rockSalt = Rock_Salt({
-  variable: "--font-rock-salt",
-  subsets: ["latin"],
-  weight: "400",
 });
 
 const caveatBrush = Caveat_Brush({
