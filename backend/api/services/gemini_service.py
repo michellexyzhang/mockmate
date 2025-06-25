@@ -57,5 +57,4 @@ def generate_mock_questions_tex(text: str) -> str:
     configure_gemini()
     model = genai.GenerativeModel('gemini-1.5-flash')
     response = model.generate_content(prompt)
-    print("\n--- Gemini generated LaTeX ---\n", response.text, "\n--- End Gemini output ---\n")
     return response.text 

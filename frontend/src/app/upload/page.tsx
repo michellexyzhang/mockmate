@@ -71,7 +71,7 @@ export default function UploadPage() {
       }
 
       // Step 3: Generate LaTeX from the extracted text
-      setStatusMessage("Generating exam with Gemini...");
+      setStatusMessage("Generating test...");
       const texResponse = await fetch("https://mockmate-backend-789151597479.northamerica-northeast1.run.app/generate-tex", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
