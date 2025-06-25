@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
+    "framer-motion": "^12.19.1",
     "jspdf": "^3.0.1",
     "motion": "^12.18.1",
     "next": "15.3.4",
