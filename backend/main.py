@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import logging
 
-from api.controllers import questions, pdf
+from api.controllers import upload, questions, pdf
 
 # Add logging configuration
 logging.basicConfig(level=logging.INFO)
@@ -26,5 +26,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(upload.router, prefix="")
 app.include_router(questions.router, prefix="")
 app.include_router(pdf.router, prefix="") 
