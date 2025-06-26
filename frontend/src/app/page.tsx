@@ -2,62 +2,73 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import PaperCard from "@/components/PaperCard";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  // Only render decorative elements on md+ screens
+  const [isMdUp, setIsMdUp] = useState(false);
+  useEffect(() => {
+    const checkScreen = () => setIsMdUp(window.innerWidth >= 768);
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen relative overflow-hidden">
-      {/* Top-left card */}
-      <PaperCard
-        rotation={-8}
-        badgeColor="bg-yellow-400"
-        badgeIcon="📄"
-        className="absolute top-44 left-34 z-10 w-24 h-28 md:w-44 md:h-56 lg:w-66 lg:h-84"
-      />
-      {/* Bottom-right card */}
-      <PaperCard
-        rotation={6}
-        badgeColor="bg-blue-500"
-        badgeIcon="📝"
-        className="absolute bottom-54 right-34 z-10 w-24 h-28 md:w-44 md:h-56 lg:w-66 lg:h-84"
-      />
-      {/* Top-right math equation */}
-      <motion.div
-        initial={{ opacity: 0, x: 40, y: -40 }}
-        animate={{ opacity: 1, x: 0, y: 0 }}
-        transition={{ type: "spring", bounce: 0.3, duration: 1 }}
-        className="absolute top-50 right-16 z-10"
-      >
-        <span
-            style={{
-            fontFamily: "'Caveat Brush', cursive",
-            display: "inline-block",
-            transform: "rotate(12deg)"
-  }}
-          className="text-xl md:text-3xl lg:text-4xl text-gray-700 whitespace-nowrap select-none"
-        >
-          ∫₀^∞ e<sup>-x²</sup> dx = √π &nbsp; + &nbsp; limₙ→∞ (1 + 1/n)<sup>n</sup> &nbsp;
-        </span>
-      </motion.div>
-      {/* Bottom-left physics/science symbol */}
-      <motion.div
-        initial={{ opacity: 0, x: -40, y: 40 }}
-        animate={{ opacity: 1, x: 0, y: 0 }}
-        transition={{ type: "spring", bounce: 0.3, duration: 1 }}
-        className="absolute bottom-50 left-30 z-10"
-      >
-        <span
-            style={{
-            fontFamily: "'Caveat Brush', cursive",
-            display: "inline-block",
-            transform: "rotate(-12deg)"
-  }}
-          className="text-2xl md:text-4xl lg:text-5xl text-gray-700 select-none"
-        >
-          E = mc²
-        </span>
-      </motion.div>
-      <main className="flex flex-col items-center justify-center flex-1 px-20 text-center">
-        <h1 className="text-6xl md:text-8xl lg:text-9xl font-extrabold font-[family-name:var(--font-pencil)]">
+      {/* Only render on md+ screens */}
+      {isMdUp && (
+        <>
+          <PaperCard
+            rotation={-8}
+            badgeColor="bg-yellow-400"
+            badgeIcon="📄"
+            className="absolute top-16 left-4 w-28 h-32 lg:top-44 lg:left-34 lg:w-66 lg:h-84 z-10"
+          />
+          <PaperCard
+            rotation={6}
+            badgeColor="bg-blue-500"
+            badgeIcon="📝"
+            className="absolute bottom-16 right-4 w-28 h-32 lg:bottom-54 lg:right-34 lg:w-66 lg:h-84 z-10"
+          />
+          <motion.div
+            initial={{ opacity: 0, x: 40, y: -40 }}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            transition={{ type: "spring", bounce: 0.3, duration: 1 }}
+            className="absolute top-8 right-4 md:top-24 md:right-16 lg:top-50 lg:right-16 z-10"
+          >
+            <span
+              style={{
+                fontFamily: "'Caveat Brush', cursive",
+                display: "inline-block",
+                transform: "rotate(12deg)"
+              }}
+              className="text-2xl md:text-3xl lg:text-4xl text-gray-700 whitespace-nowrap select-none"
+            >
+              ∫₀^∞ e<sup>-x²</sup> dx = √π &nbsp; + &nbsp; limₙ→∞ (1 + 1/n)<sup>n</sup> &nbsp;
+            </span>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: -40, y: 40 }}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            transition={{ type: "spring", bounce: 0.3, duration: 1 }}
+            className="absolute bottom-8 left-4 md:bottom-24 md:left-16 lg:bottom-50 lg:left-30 z-10"
+          >
+            <span
+              style={{
+                fontFamily: "'Caveat Brush', cursive",
+                display: "inline-block",
+                transform: "rotate(-12deg)"
+              }}
+              className="text-2xl md:text-4xl lg:text-5xl text-gray-700 select-none"
+            >
+              E = mc²
+            </span>
+          </motion.div>
+        </>
+      )}
+      <main className="flex flex-col items-center justify-center flex-1 px-4 md:px-20 text-center">
+        <h1 className="text-4xl md:text-7xl lg:text-9xl font-extrabold font-[family-name:var(--font-pencil)]">
           mockmate
         </h1>
         <div className="mt-12">
