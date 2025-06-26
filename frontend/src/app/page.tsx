@@ -23,13 +23,13 @@ export default function Home() {
             rotation={-8}
             badgeColor="bg-yellow-400"
             badgeIcon="📄"
-            className="absolute top-16 left-4 w-28 h-32 lg:top-44 lg:left-34 lg:w-66 lg:h-84 z-10"
+            className="absolute top-2 left-2 w-20 h-24 md:top-8 md:left-8 md:w-28 md:h-32 lg:top-16 lg:left-16 lg:w-44 lg:h-56 xl:top-44 xl:left-34 xl:w-66 xl:h-84 z-10"
           />
           <PaperCard
             rotation={6}
             badgeColor="bg-blue-500"
             badgeIcon="📝"
-            className="absolute bottom-16 right-4 w-28 h-32 lg:bottom-54 lg:right-34 lg:w-66 lg:h-84 z-10"
+            className="absolute bottom-2 right-2 w-20 h-24 md:bottom-8 md:right-8 md:w-28 md:h-32 lg:bottom-16 lg:right-16 lg:w-44 lg:h-56 xl:bottom-54 xl:right-34 xl:w-66 xl:h-84 z-10"
           />
           <motion.div
             initial={{ opacity: 0, x: 40, y: -40 }}
