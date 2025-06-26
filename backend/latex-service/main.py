@@ -13,7 +13,12 @@ logger = logging.getLogger(__name__)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:3000", 
+        "https://www.simplymockit.com", 
+        "https://simplymockit.com",
+        "https://mockmate-sage.vercel.app/"
+        ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
