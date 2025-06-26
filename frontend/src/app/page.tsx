@@ -11,14 +11,14 @@ export default function Home() {
         rotation={-8}
         badgeColor="bg-yellow-400"
         badgeIcon="📄"
-        className="absolute top-44 left-34 z-10"
+        className="absolute top-44 left-34 z-10 w-24 h-28 md:w-44 md:h-56 lg:w-66 lg:h-84"
       />
       {/* Bottom-right card */}
       <PaperCard
         rotation={6}
         badgeColor="bg-blue-500"
         badgeIcon="📝"
-        className="absolute bottom-54 right-34 z-10"
+        className="absolute bottom-54 right-34 z-10 w-24 h-28 md:w-44 md:h-56 lg:w-66 lg:h-84"
       />
       {/* Top-right math equation */}
       <motion.div
@@ -33,7 +33,7 @@ export default function Home() {
             display: "inline-block",
             transform: "rotate(12deg)"
   }}
-          className="text-4xl sm:text-5xl text-gray-700 whitespace-nowrap select-none"
+          className="text-xl md:text-3xl lg:text-4xl text-gray-700 whitespace-nowrap select-none"
         >
           ∫₀^∞ e<sup>-x²</sup> dx = √π &nbsp; + &nbsp; limₙ→∞ (1 + 1/n)<sup>n</sup> &nbsp;
         </span>
@@ -51,13 +51,13 @@ export default function Home() {
             display: "inline-block",
             transform: "rotate(-12deg)"
   }}
-          className="text-5xl text-gray-700 select-none"
+          className="text-2xl md:text-4xl lg:text-5xl text-gray-700 select-none"
         >
           E = mc²
         </span>
       </motion.div>
       <main className="flex flex-col items-center justify-center flex-1 px-20 text-center">
-        <h1 className="text-9xl font-extrabold font-[family-name:var(--font-pencil)]">
+        <h1 className="text-6xl md:text-8xl lg:text-9xl font-extrabold font-[family-name:var(--font-pencil)]">
           mockmate
         </h1>
         <div className="mt-12">

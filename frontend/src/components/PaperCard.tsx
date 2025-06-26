@@ -17,14 +17,14 @@ const PaperCard = ({ rotation, badgeColor, badgeIcon, className = "" }: PaperCar
       className={className}
     >
       <div
-        className={`relative bg-white rounded-xl shadow-xl w-66 h-84 flex flex-col justify-end p-4 rotate-[${rotation}deg]`}
+        className={`relative bg-white rounded-xl shadow-xl w-32 h-40 p-2 sm:w-66 sm:h-84 sm:p-4 flex flex-col justify-end rotate-[${rotation}deg]`}
       >
-        <div className="absolute top-6 left-6 w-20 h-2 bg-gray-200 rounded"></div>
-        <div className="absolute top-12 left-6 w-16 h-2 bg-gray-100 rounded"></div>
-        <div className="absolute top-16 left-6 w-24 h-2 bg-gray-100 rounded"></div>
+        <div className="absolute top-3 left-3 w-12 h-1 bg-gray-200 rounded sm:top-6 sm:left-6 sm:w-20 sm:h-2"></div>
+        <div className="absolute top-6 left-3 w-10 h-1 bg-gray-100 rounded sm:top-12 sm:left-6 sm:w-16 sm:h-2"></div>
+        <div className="absolute top-9 left-3 w-16 h-1 bg-gray-100 rounded sm:top-16 sm:left-6 sm:w-24 sm:h-2"></div>
 
-        <div className={`absolute bottom-3 right-3 ${badgeColor} w-8 h-8 flex items-center justify-center rounded-full shadow-md border-2 border-white`}>
-          <span className="text-white text-xl">{badgeIcon}</span>
+        <div className={`absolute bottom-2 right-2 ${badgeColor} w-6 h-6 flex items-center justify-center rounded-full shadow-md border-2 border-white sm:bottom-3 sm:right-3 sm:w-8 sm:h-8`}>
+          <span className="text-white text-lg sm:text-xl">{badgeIcon}</span>
         </div>
       </div>
     </motion.div>
