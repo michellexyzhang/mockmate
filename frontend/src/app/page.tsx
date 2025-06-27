@@ -77,12 +77,12 @@ export default function Home() {
             style={{ transform: 'rotate(-6deg)' }}
           >
             simply
-            <span className="block absolute left-0 right-0 -bottom-2 h-0.5 md:h-1 lg:h-2 bg-blue-100 rounded-full w-full"></span>
+            <span className="block absolute left-0 right-0 -bottom-0 md:-bottom-2 h-0.5 md:h-1 lg:h-2 bg-blue-100 rounded-full w-full"></span>
           </span>
           <span
             className="font-extrabold text-5xl md:text-7xl lg:text-8xl text-blue-600"
             style={{
-              background: "linear-gradient(90deg, #5a7bbd 0%, #6b8fcf 100%)",
+              background: "linear-gradient(45deg, #91B6D5 0%, #52749B 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent"
             }}
