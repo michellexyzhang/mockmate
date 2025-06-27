@@ -101,13 +101,14 @@ export default function Home() {
         </p>
         <div className="mt-12">
           <Link href="/upload">
-            <button className="px-8 py-3 text-lg font-semibold text-white rounded-full"
+            <motion.button
+              whileHover={{ scale: 1.07 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+              className="px-8 py-3 text-lg font-semibold text-white rounded-full"
               style={{ backgroundColor: '#52749B' }}
-              onMouseOver={e => e.currentTarget.style.backgroundColor = '#39516B'}
-              onMouseOut={e => e.currentTarget.style.backgroundColor = '#52749B'}
             >
               get started →
-            </button>
+            </motion.button>
           </Link>
         </div>
       </main>
