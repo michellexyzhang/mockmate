@@ -68,9 +68,28 @@ export default function Home() {
         </>
       )}
       <main className="flex flex-col items-center justify-center flex-1 px-4 md:px-20 text-center">
-        <h1 className="text-4xl md:text-7xl lg:text-9xl font-extrabold font-[family-name:var(--font-pencil)]">
-          mockmate
-        </h1>
+        <div className="inline-block mb-4 px-2 py-0.5 sm:px-4 sm:py-1 rounded-full bg-blue-100">
+          <span className="text-blue-700 font-semibold text-xs sm:text-sm md:text-lg">need extra test prep?</span>
+        </div>
+        <div className="flex items-end space-x-2">
+          <span
+            className="font-extrabold text-black text-xl md:text-3xl lg:text-5xl relative inline-block mr-4"
+            style={{ transform: 'rotate(-6deg)' }}
+          >
+            simply
+            <span className="block absolute left-0 right-0 -bottom-2 h-0.5 md:h-1 lg:h-2 bg-blue-100 rounded-full w-full"></span>
+          </span>
+          <span
+            className="font-extrabold text-5xl md:text-7xl lg:text-8xl text-blue-600"
+            style={{
+              background: "linear-gradient(90deg, #5a7bbd 0%, #6b8fcf 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent"
+            }}
+          >
+            mock it.
+          </span>
+        </div>
         <div className="mt-12">
           <Link href="/upload">
             <button className="px-8 py-3 text-lg font-semibold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
