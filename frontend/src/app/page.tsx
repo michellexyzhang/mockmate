@@ -68,8 +68,14 @@ export default function Home() {
         </>
       )}
       <main className="flex flex-col items-center justify-center flex-1 px-4 md:px-20 text-center">
-        <div className="inline-block mb-4 px-2 py-0.5 sm:px-4 sm:py-1 rounded-full bg-blue-100">
-          <span className="text-blue-700 font-semibold text-xs sm:text-sm md:text-lg">need extra test prep?</span>
+        <div className="relative inline-block mb-4 px-2 py-0.5 sm:px-4 sm:py-1 rounded-full bg-blue-100">
+          <img
+            src="/images/char1.png"
+            alt="Character"
+            className="absolute -top-6 right-2 w-10"
+            style={{ zIndex: 2 }}
+          />
+          <span className="font-semibold text-xs sm:text-sm md:text-lg" style={{ color: '#52749B' }}>need extra test prep?</span>
         </div>
         <div className="flex items-end space-x-2">
           <span
@@ -92,8 +98,12 @@ export default function Home() {
         </div>
         <div className="mt-12">
           <Link href="/upload">
-            <button className="px-8 py-3 text-lg font-semibold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-              Start
+            <button className="px-8 py-3 text-lg font-semibold text-white rounded-full"
+              style={{ backgroundColor: '#52749B' }}
+              onMouseOver={e => e.currentTarget.style.backgroundColor = '#39516B'}
+              onMouseOut={e => e.currentTarget.style.backgroundColor = '#52749B'}
+            >
+              get started →
             </button>
           </Link>
         </div>
