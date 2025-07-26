@@ -1,6 +1,6 @@
 # MockMate
 
-A web application that transforms worksheets and tests into beautifully formatted LaTeX mock tests in under 1 minute.
+A web app that instantly generates LaTeX-formatted mock test PDFs from worksheets and tests.
 
 ## Features
 
